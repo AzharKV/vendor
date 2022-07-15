@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:vendor/controllers/products_controller.dart';
+import 'package:vendor/data/models/products_list_model.dart';
 import 'package:vendor/view/dashboard/widgets/option_container.dart';
 
 class DashBoardScreen extends StatelessWidget {
@@ -6,6 +9,8 @@ class DashBoardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProductsController productsController = Get.put(ProductsController());
+
     return Scaffold(
       appBar: AppBar(title: const Text("DashBoard"), centerTitle: true),
       body: Stack(
@@ -27,29 +32,45 @@ class DashBoardScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16.0),
-                const Text("Products", style: TextStyle(fontSize: 24.0)),
+                const Text("Products", style: TextStyle(fontSize: 20.0)),
                 const SizedBox(height: 16.0),
                 Expanded(
-                  child: ListView.separated(
-                    itemCount: 100,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ListTile(
-                        title: const Text("title"),
-                        subtitle: const Text("price"),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                                onPressed: () {}, icon: const Icon(Icons.edit)),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.delete)),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
+                  child: Obx(
+                    () => ListView.separated(
+                      itemCount: productsController
+                              .productsList.value.resultData?.length ??
+                          0,
+                      itemBuilder: (BuildContext context, int index) {
+                        Product data = productsController
+                            .productsList.value.resultData![index];
+
+                        return ListTile(
+                          title: Text(data.name ?? ""),
+                          subtitle: Text(
+                            "₹ ${data.price ?? 0}",
+                            style: const TextStyle(color: Colors.green),
+                          ),
+                          leading: Image.network(
+                            data.imageUrl![0],
+                            width: 50.0,
+                            fit: BoxFit.fill,
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.edit)),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(Icons.delete)),
+                            ],
+                          ),
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) =>
+                          const Divider(),
+                    ),
                   ),
                 )
               ],
@@ -60,8 +81,8 @@ class DashBoardScreen extends StatelessWidget {
             right: 16.0,
             child: FloatingActionButton(
                 onPressed: () {},
-                child: Icon(Icons.add, color: Colors.yellow),
-                backgroundColor: Colors.black),
+                backgroundColor: Colors.black,
+                child: const Icon(Icons.add, color: Colors.yellow)),
           )
         ],
       ),

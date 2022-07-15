@@ -13,8 +13,8 @@ class OptionContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        height: 90.0,
-        padding: const EdgeInsets.all(16.0),
+        height: 75.0,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         decoration: const BoxDecoration(
             color: Colors.black,
             borderRadius: BorderRadius.all(Radius.circular(12.0))),
@@ -25,7 +25,7 @@ class OptionContainer extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(color: Colors.white, fontSize: 20.0),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ],
