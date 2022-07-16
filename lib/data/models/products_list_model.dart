@@ -19,7 +19,7 @@ class ProductsListModel {
 
   String? status;
   String? message;
-  List<Product>? resultData;
+  List<ProductModel>? resultData;
 
   factory ProductsListModel.fromJson(Map<String, dynamic> json) =>
       ProductsListModel(
@@ -27,8 +27,8 @@ class ProductsListModel {
         message: json["message"] == null ? null : json["message"],
         resultData: json["resultData"] == null
             ? null
-            : List<Product>.from(
-                json["resultData"].map((x) => Product.fromJson(x))),
+            : List<ProductModel>.from(
+                json["resultData"].map((x) => ProductModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -40,8 +40,8 @@ class ProductsListModel {
       };
 }
 
-class Product {
-  Product({
+class ProductModel {
+  ProductModel({
     this.id,
     this.name,
     this.userId,
@@ -91,7 +91,7 @@ class Product {
   List<String>? thumbUrl;
   List<String>? imageUrl;
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
         id: json["_id"] == null ? null : json["_id"],
         name: json["name"] == null ? null : json["name"],
         userId: json["user_id"] == null ? null : json["user_id"],

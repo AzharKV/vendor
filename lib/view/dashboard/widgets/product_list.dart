@@ -16,7 +16,7 @@ class ProductsList extends StatelessWidget {
           itemCount:
               productsController.productsList.value.resultData?.length ?? 0,
           itemBuilder: (BuildContext context, int index) {
-            Product data =
+            ProductModel data =
                 productsController.productsList.value.resultData![index];
 
             return ListTile(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vendor/controllers/products_controller.dart';
-import 'package:vendor/controllers/widgets/brand_drop_down_widget.dart';
-import 'package:vendor/controllers/widgets/category_drop_down_widget.dart';
-import 'package:vendor/controllers/widgets/custom_text_field.dart';
+import 'package:vendor/view/product_details/widgets/brand_select_widget.dart';
+import 'package:vendor/view/product_details/widgets/category_drop_down_widget.dart';
+import 'package:vendor/view/product_details/widgets/custom_text_field.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({Key? key}) : super(key: key);
@@ -11,6 +11,8 @@ class ProductDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ProductsController productsController = Get.find<ProductsController>();
+    productsController.fetchCategoryList();
+    productsController.fetchBrandList();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Enter Product Details"),
@@ -22,7 +24,7 @@ class ProductDetailsScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
           child: Form(
             key: productsController.formKey,
             child: ListView(
@@ -31,38 +33,51 @@ class ProductDetailsScreen extends StatelessWidget {
                     nameController: productsController.nameController,
                     title: "Product Name"),
                 CustomTextField(
-                    nameController: productsController.priceController,
-                    title: "Original Price/MRP"),
+                  nameController: productsController.priceController,
+                  title: "Original Price/MRP",
+                  textInputType: TextInputType.number,
+                ),
                 CustomTextField(
-                    nameController: productsController.offerPriceController,
-                    title: "Offer Price"),
+                  nameController: productsController.offerPriceController,
+                  title: "Offer Price",
+                  textInputType: TextInputType.number,
+                ),
                 Row(
                   children: const [
-                    BrandDropDownWidget(title: "Brand"),
+                    BrandSelectWidget(isBrand: true),
                     SizedBox(width: 8.0),
-                    BrandDropDownWidget(title: "Model"),
+                    BrandSelectWidget(isBrand: false),
                   ],
                 ),
                 Row(
                   children: const [
-                    CategoryDropDownWidget(title: "Category"),
+                    CategoryDropDownWidget(isCategory: true),
                     SizedBox(width: 8.0),
-                    CategoryDropDownWidget(title: "Sub Category"),
+                    CategoryDropDownWidget(isCategory: false),
                   ],
                 ),
                 CustomTextField(
-                    nameController: productsController.stockController,
-                    title: "In Stock Count"),
+                  nameController: productsController.stockController,
+                  title: "In Stock Count",
+                  textInputType: TextInputType.number,
+                ),
                 CustomTextField(
                   nameController: productsController.descriptionController,
                   title: "Description",
-                  maxLines: 10,
+                  maxLines: 5,
                   textInputType: TextInputType.multiline,
                 ),
-                TextButton(onPressed: () {}, child: const Text("Submit"))
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.green,
+                      minimumSize: const Size.fromHeight(50)),
+                  onPressed: () => productsController.submitForm(),
+                  child: const Text('Submit',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
               ]
                   .map((e) => Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0), child: e))
+                      padding: const EdgeInsets.only(bottom: 18.0), child: e))
                   .toList(),
             ),
           ),
