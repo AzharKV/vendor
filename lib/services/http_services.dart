@@ -44,10 +44,7 @@ class HttpService {
     required String url,
     required String id,
   }) async {
-    var headers = {
-      'Authorization':
-          'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoiNjJjZmYxMDY5MzUwNzBkZGQyOGE4ZDg1IiwidXNlcm5hbWUiOiJ0ZXN0VmVuZG9yIiwicm9sZSI6W3siX2lkIjoiNjIxYTA0MTdmZjk4ODdhNWUxYzE5YTkwIiwibmFtZSI6InZlbmRvciIsIl9fdiI6MH1dLCJuYW1lIjoidGVzdFZlbmRvciIsImVtYWlsIjoiYXBwcy5pdEBjYXJjbGVueC5jb20iLCJwaG9uZSI6IjIyMzIyMzIyMzIifSwiaWF0IjoxNjU3Nzk1MDE4LCJleHAiOjE5NzMzNzEwMTh9.0QWECYCb3K_Icq9Ae4-GinDo3OcGEKnbfPZMrfULAwE'
-    };
+    Map<String, String> header = await getHeaders();
 
     var request = http.MultipartRequest('POST', Uri.parse(url));
     request.fields.addAll({'id': '62d2a93b537b202e5c1cb9a4'});
@@ -56,18 +53,22 @@ class HttpService {
       File(imagePath).readAsBytesSync(),
       filename: imagePath.split("/").last,
     ));
-    request.headers.addAll(headers);
+    request.headers.addAll(header);
 
     Utility.customDebugPrint(
-        "requesting for multipart $url \nheader $headers \nrequest ${request.fields} ${request.files[0].filename}");
+        "requesting for multipart $url \nheader $header \nrequest ${request.fields} ${request.files[0].filename}");
 
     var res = await request.send();
     var response = await http.Response.fromStream(res);
 
     Utility.customDebugPrint(
-        "$url \nheader $headers \nresponse ${response.body}");
+        "$url \nheader $header \nresponse ${response.body}");
 
-    return response;
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      return Exception("Failed to load data");
+    }
   }
 
   Future<Map<String, String>> getHeaders() async {

@@ -51,6 +51,6 @@ class ProductsRepository {
     var response =
         await httpService.multipart(imagePath: imagePath, url: url, id: id);
 
-    return jsonDecode(response.body);
+    return response;
   }
 }
