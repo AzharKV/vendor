@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:vendor/view/dashboard/widgets/Option_list.dart';
 import 'package:vendor/view/dashboard/widgets/option_container.dart';
 import 'package:vendor/view/dashboard/widgets/product_list.dart';
+import 'package:vendor/view/product_details/product_details_screen.dart';
 
 class DashBoardScreen extends StatelessWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
@@ -39,7 +41,8 @@ class DashBoardScreen extends StatelessWidget {
             bottom: 16.0,
             right: 16.0,
             child: FloatingActionButton(
-                onPressed: () {},
+                heroTag: "addNew",
+                onPressed: () => Get.to(() => const ProductDetailsScreen()),
                 backgroundColor: Colors.black,
                 child: const Icon(Icons.add, color: Colors.yellow)),
           )
@@ -76,6 +79,7 @@ class DashBoardScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "addCart",
         backgroundColor: Colors.black,
         child: const Icon(Icons.shopping_bag_outlined, color: Colors.yellow),
         onPressed: () {},
